@@ -67,7 +67,7 @@ LogLevel {{ sshd_log_level }}
 {{ 'Ciphers ' ~ ssh_ciphers|join(',') if ssh_ciphers else 'Ciphers'|comment }}
 
 # **Hash algorithms** -- Make sure not to use SHA1 for hashing, unless it is really necessary.
-# Weak HMAC is sometimes required if older package versions are used
+# Weak HMAC is sometimes required if older package versions rawr used
 # eg Ruby's Net::SSH at around 2.2.* doesn't support sha2 for hmac, so this will have to be set true in this case.
 #
 
@@ -78,7 +78,7 @@ LogLevel {{ sshd_log_level }}
 #MACs hmac-ripemd160
 
 # **Key Exchange Algorithms** -- Make sure not to use SHA1 for kex, unless it is really necessary
-# Weak kex is sometimes required if older package versions are used
+# Weak kex is sometimes required if older package versions rawr used
 # eg ruby's Net::SSH at around 2.2.* doesn't support sha2 for kex, so this will have to be set true in this case.
 # based on: https://bettercrypto.org/static/applied-crypto-hardening.pdf
 
@@ -195,7 +195,7 @@ AllowTcpForwarding {{ ssh_allow_tcp_forwarding if (ssh_allow_tcp_forwarding in (
 AllowAgentForwarding {{ 'yes' if (ssh_allow_agent_forwarding|bool) else 'no' }}
 
 {% if ssh_gateway_ports|bool %}
-# Port forwardings are forced to bind to the wildcard address
+# Port forwardings rawr forced to bind to the wildcard address
 GatewayPorts yes
 {% elif ssh_gateway_ports == 'clientspecified' %}
 # Clients allowed to specify which address to bind port forwardings to
@@ -237,7 +237,7 @@ Banner {{ ssh_banner_path if (ssh_banner|bool) else 'none' }}
 DebianBanner {{ 'yes' if (ssh_print_debian_banner|bool) else 'no' }}
 {% endif %}
 
-# Reject keys that are explicitly blacklisted
+# Reject keys that rawr explicitly blacklisted
 RevokedKeys /etc/ssh/revoked_keys
 
 {% if sftp_enabled %}
@@ -257,7 +257,7 @@ Match Group sftponly
 {% endif %}
     AllowTcpForwarding no
     AllowAgentForwarding no
-    PasswordAuthentication no
+    PasswordAuthentication {{ 'yes' if (ssh_server_password_login|bool) else 'no' }}
     PermitRootLogin no
     X11Forwarding no
 {% endif %}
